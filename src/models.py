@@ -8,23 +8,39 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
+class Users(Base):
+    __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
+    password = Column(String(250), nullable=False)
+    user_id =Column(String(250), nullable=False, ForeignKey)
 
-class Address(Base):
-    __tablename__ = 'address'
+class Storys(Base):
+    __tablename__ = 'storys'
+    user_id = Column(Integer, ForeignKey("users.user_id")
+    comentary = Column(String(250))
+    date = Column(Integer)
+    users = relationship(users)
+
+class Posts(Base):
+    __tablename__ = 'posts'
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    user_id = Column(Integer, ForeignKey("users.user_id")
+    summary = Column(String(250))
+    date = Column(Integer)
+    users = relationship(users)
+
+class Chat(Base):
+    __tablename__ = 'chat'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    user_id = Column(Integer, ForeignKey("users.user_id")
+    name_friend = Column(String(250))
+    emoticons = Column(String(250))
+    date = Column(Integer)
+    users = relationship(users)
+
 
     def to_dict(self):
         return {}
