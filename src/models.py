@@ -8,39 +8,36 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-class Users(Base):
+class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     password = Column(String(250), nullable=False)
-    user_id =Column(String(250), nullable=False, ForeignKey)
+    storys = relationship("Storys")
+    posts = relationship("Posts")
+    chats = relationship("Chats")
 
-class Storys(Base):
+class Story(Base):
     __tablename__ = 'storys'
-    user_id = Column(Integer, ForeignKey("users.user_id")
-    comentary = Column(String(250))
-    date = Column(Integer)
-    users = relationship(users)
+    id = Column(Integer, primary_key=True)
+    comentary = Column(String(250), nullable=False)
+    date = Column(Integer, nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"))
 
-class Posts(Base):
+class Post(Base):
     __tablename__ = 'posts'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    user_id = Column(Integer, ForeignKey("users.user_id")
-    summary = Column(String(250))
-    date = Column(Integer)
-    users = relationship(users)
+    id = Column(Integer, primary_key=True)
+    summary = Column(String(250), nullable=False)
+    date = Column(Integer, nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"))
 
 class Chat(Base):
-    __tablename__ = 'chat'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    user_id = Column(Integer, ForeignKey("users.user_id")
-    name_friend = Column(String(250))
-    emoticons = Column(String(250))
-    date = Column(Integer)
-    users = relationship(users)
-
+    __tablename__ = 'chats'
+    id = Column(Integer, primary_key=True)
+    name_friend = Column(String(250), nullable=False)
+    emoticons = Column(String(250), nullable=False)
+    date = Column(Integer, nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"))
 
     def to_dict(self):
         return {}
